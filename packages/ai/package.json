@@ -49,8 +49,10 @@
 		"generate-image-models": "node scripts/generate-image-models.ts",
 		"build": "npm run generate-models && npm run generate-image-models && tsgo -p tsconfig.build.json",
 		"test": "vitest --run",
-		"gate:gen": "node test/gate/gen-partial-json-goldens.ts",
-		"gate:selfcheck": "node test/gate/gen-partial-json-goldens.ts --check",
+		"gate:gen:partial-json": "node test/gate/gen-partial-json-goldens.ts",
+		"gate:gen:anthropic": "node test/gate/gen-anthropic-goldens.ts",
+		"gate:gen": "npm run gate:gen:partial-json && npm run gate:gen:anthropic",
+		"gate:selfcheck": "node test/gate/gen-partial-json-goldens.ts --check && node test/gate/gen-anthropic-goldens.ts --check",
 		"gate:rust": "cargo test --manifest-path native/ai-streaming-core/Cargo.toml --features gate",
 		"prepublishOnly": "npm run clean && npm run build"
 	},

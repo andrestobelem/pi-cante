@@ -133,9 +133,25 @@ fn repair_units(json: &[u16]) -> Vec<u16> {
 	out
 }
 
-fn repair_string(s: &str) -> String {
+pub fn repair_string(s: &str) -> String {
 	let units: Vec<u16> = s.encode_utf16().collect();
 	String::from_utf16_lossy(&repair_units(&units))
+}
+
+/// Port of parseJsonWithRepair returning a serde_json::Value, for navigating SSE event payloads.
+/// Mirrors json-parse.ts: JSON.parse, and on failure repairJson + JSON.parse (else rethrow).
+pub fn parse_with_repair_value(json: &str) -> Result<Value, ()> {
+	match serde_json::from_str::<Value>(json) {
+		Ok(v) => Ok(v),
+		Err(_) => {
+			let repaired = repair_string(json);
+			if repaired != json {
+				serde_json::from_str::<Value>(&repaired).map_err(|_| ())
+			} else {
+				Err(())
+			}
+		}
+	}
 }
 
 /// JS `JSON.parse` equivalent for our inputs.
@@ -144,7 +160,7 @@ fn json_parse_str(s: &str) -> Result<JsVal, ()> {
 	Ok(value_to_jsval(&v))
 }
 
-fn value_to_jsval(v: &Value) -> JsVal {
+pub fn value_to_jsval(v: &Value) -> JsVal {
 	match v {
 		Value::Null => JsVal::Null,
 		Value::Bool(b) => JsVal::Bool(*b),
