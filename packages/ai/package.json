@@ -55,6 +55,8 @@
 		"gate:gen": "npm run gate:gen:partial-json && npm run gate:gen:anthropic && npm run gate:gen:openai",
 		"gate:selfcheck": "node test/gate/gen-partial-json-goldens.ts --check && node test/gate/gen-anthropic-goldens.ts --check && node test/gate/gen-openai-goldens.ts --check",
 		"gate:rust": "cargo test --manifest-path native/ai-streaming-core/Cargo.toml --features gate",
+		"gate:wasm:build": "cargo build --manifest-path native/ai-streaming-core/Cargo.toml --target wasm32-unknown-unknown --release && wasm-bindgen --target nodejs --out-dir test/gate/wasm native/ai-streaming-core/target/wasm32-unknown-unknown/release/ai_streaming_core.wasm",
+		"gate:wasm:check": "node scripts/gate-wasm-check.mjs",
 		"prepublishOnly": "npm run clean && npm run build"
 	},
 	"dependencies": {

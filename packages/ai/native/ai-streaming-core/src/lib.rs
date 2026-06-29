@@ -10,6 +10,11 @@ pub mod openai;
 pub mod partial_json;
 pub mod sse;
 
+// FFI integration gate (Increment 4): compiled ONLY for wasm32 so the native conformance
+// build never pulls in wasm-bindgen. See packages/ai/test/gate/wasm-integration.test.ts.
+#[cfg(target_arch = "wasm32")]
+pub mod wasm;
+
 pub use anthropic::decode_anthropic;
 pub use openai::decode_openai;
 pub use partial_json::{canonical, parse_streaming_json, JsVal};

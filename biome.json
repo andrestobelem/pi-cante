@@ -32,6 +32,7 @@
 			"!**/test-sessions.ts",
 			"!**/models.generated.ts",
 			"!**/*.models.ts",
+			"!packages/ai/test/gate/wasm",
 			"!packages/mom/data/**/*",
 			"!!**/node_modules"
 		]

@@ -1,0 +1,6 @@
+# Pins the toolchain used to regenerate the committed WASM integration-gate artifact
+# (packages/ai/test/gate/wasm/). Matches the version the first artifact was built with.
+# NOT a CI input — CI has no Rust and loads the committed wasm directly.
+[toolchain]
+channel = "1.92.0"
+targets = ["wasm32-unknown-unknown"]
