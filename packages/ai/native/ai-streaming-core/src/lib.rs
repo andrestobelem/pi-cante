@@ -6,8 +6,10 @@
 //! golden output captured from the TypeScript oracle.
 
 pub mod anthropic;
+pub mod openai;
 pub mod partial_json;
 pub mod sse;
 
 pub use anthropic::decode_anthropic;
+pub use openai::decode_openai;
 pub use partial_json::{canonical, parse_streaming_json, JsVal};

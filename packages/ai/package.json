@@ -51,8 +51,9 @@
 		"test": "vitest --run",
 		"gate:gen:partial-json": "node test/gate/gen-partial-json-goldens.ts",
 		"gate:gen:anthropic": "node test/gate/gen-anthropic-goldens.ts",
-		"gate:gen": "npm run gate:gen:partial-json && npm run gate:gen:anthropic",
-		"gate:selfcheck": "node test/gate/gen-partial-json-goldens.ts --check && node test/gate/gen-anthropic-goldens.ts --check",
+		"gate:gen:openai": "node test/gate/gen-openai-goldens.ts",
+		"gate:gen": "npm run gate:gen:partial-json && npm run gate:gen:anthropic && npm run gate:gen:openai",
+		"gate:selfcheck": "node test/gate/gen-partial-json-goldens.ts --check && node test/gate/gen-anthropic-goldens.ts --check && node test/gate/gen-openai-goldens.ts --check",
 		"gate:rust": "cargo test --manifest-path native/ai-streaming-core/Cargo.toml --features gate",
 		"prepublishOnly": "npm run clean && npm run build"
 	},

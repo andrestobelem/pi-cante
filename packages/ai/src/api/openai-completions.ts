@@ -109,6 +109,12 @@ function isEncryptedReasoningDetail(detail: unknown): detail is OpenAIEncryptedR
 export interface OpenAICompletionsOptions extends StreamOptions {
 	toolChoice?: "auto" | "none" | "required" | { type: "function"; function: { name: string } };
 	reasoningEffort?: "minimal" | "low" | "medium" | "high" | "xhigh";
+	/**
+	 * Test-only injection seam: when provided, the streaming loop uses this client instead of
+	 * constructing one via createClient. Mirrors the Anthropic `client?: Anthropic` seam and is
+	 * used by the differential contract gate to replay recorded ChatCompletionChunk sequences.
+	 */
+	client?: OpenAI;
 }
 
 interface OpenAICompatCacheControl {
@@ -179,7 +185,8 @@ export const stream: StreamFunction<"openai-completions", OpenAICompletionsOptio
 			const compat = getCompat(model);
 			const cacheRetention = resolveCacheRetention(options?.cacheRetention, options?.env);
 			const cacheSessionId = cacheRetention === "none" ? undefined : options?.sessionId;
-			const client = createClient(model, context, apiKey, options?.headers, cacheSessionId, compat);
+			const client =
+				options?.client ?? createClient(model, context, apiKey, options?.headers, cacheSessionId, compat);
 			let params = buildParams(model, context, options, compat, cacheRetention);
 			const nextParams = await options?.onPayload?.(params, model);
 			if (nextParams !== undefined) {

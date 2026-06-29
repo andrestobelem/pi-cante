@@ -10,7 +10,9 @@
 
 use serde_json::Value;
 
-use crate::partial_json::{parse_streaming_json, parse_with_repair_value, value_to_jsval, JsVal};
+use crate::partial_json::{
+	jint, js_num, js_obj, js_str, parse_streaming_json, parse_with_repair_value, value_to_jsval, JsVal,
+};
 use crate::sse::{parse_sse, ServerSentEvent};
 
 const MESSAGE_EVENTS: [&str; 6] = [
@@ -21,22 +23,6 @@ const MESSAGE_EVENTS: [&str; 6] = [
 	"content_block_delta",
 	"content_block_stop",
 ];
-
-fn js_str(x: &str) -> JsVal {
-	JsVal::Str(x.to_string())
-}
-
-fn js_num(x: i64) -> JsVal {
-	JsVal::Num(x as f64)
-}
-
-fn js_obj(pairs: Vec<(&str, JsVal)>) -> JsVal {
-	JsVal::Obj(pairs.into_iter().map(|(k, v)| (k.to_string(), v)).collect())
-}
-
-fn jint(v: &Value) -> i64 {
-	v.as_i64().or_else(|| v.as_f64().map(|f| f as i64)).unwrap_or(0)
-}
 
 #[derive(Clone, Copy, PartialEq)]
 enum Kind {

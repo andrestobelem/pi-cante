@@ -37,6 +37,26 @@ pub enum JsVal {
 	Obj(Vec<(String, JsVal)>),
 }
 
+// ── Shared JsVal builders ─────────────────────────────────────────────────────────────────────────
+// Lifted here (from anthropic.rs) so every decoder builds snapshots against the same canonical contract.
+
+pub fn js_str(x: &str) -> JsVal {
+	JsVal::Str(x.to_string())
+}
+
+pub fn js_num(x: i64) -> JsVal {
+	JsVal::Num(x as f64)
+}
+
+pub fn js_obj(pairs: Vec<(&str, JsVal)>) -> JsVal {
+	JsVal::Obj(pairs.into_iter().map(|(k, v)| (k.to_string(), v)).collect())
+}
+
+/// Read an integer from a serde_json number, tolerating float-encoded integers; non-numbers -> 0.
+pub fn jint(v: &Value) -> i64 {
+	v.as_i64().or_else(|| v.as_f64().map(|f| f as i64)).unwrap_or(0)
+}
+
 fn is_valid_json_escape(u: u16) -> bool {
 	// VALID_JSON_ESCAPES = {", \, /, b, f, n, r, t, u}
 	matches!(

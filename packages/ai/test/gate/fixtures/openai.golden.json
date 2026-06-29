@@ -1,0 +1,1466 @@
+[
+  {
+    "name": "text-single-chunk",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "Hello"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 12,
+          "completion_tokens": 5
+        }
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"Hello\",\"type\":\"text_delta\"},{\"content\":\"Hello\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"Hello\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":12,\"output\":5,\"reasoning\":0,\"totalTokens\":17}}}"
+  },
+  {
+    "name": "text-multi-delta",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "Hel"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "lo"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 12,
+          "completion_tokens": 5
+        }
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"Hel\",\"type\":\"text_delta\"},{\"contentIndex\":0,\"delta\":\"lo\",\"type\":\"text_delta\"},{\"content\":\"Hello\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"Hello\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":12,\"output\":5,\"reasoning\":0,\"totalTokens\":17}}}"
+  },
+  {
+    "name": "text-empty-and-null-content",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": ""
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": null
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "Hi"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"Hi\",\"type\":\"text_delta\"},{\"content\":\"Hi\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"Hi\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "tool-call-fragments",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "call_1",
+                  "function": {
+                    "name": "edit",
+                    "arguments": "{\"path\":\""
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "/foo/b"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "ar\",\"text\":\"col1\\tcol2"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "\"}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 12,
+          "completion_tokens": 8
+        }
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"{\\\"path\\\":\\\"\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"delta\":\"/foo/b\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"delta\":\"ar\\\",\\\"text\\\":\\\"col1\\\\tcol2\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"delta\":\"\\\"}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{\"path\":\"/foo/bar\",\"text\":\"col1\\tcol2\"},\"id\":\"call_1\",\"name\":\"edit\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":12,\"output\":8,\"reasoning\":0,\"totalTokens\":20}}}"
+  },
+  {
+    "name": "tool-call-id-late",
+    "api": "openai-completions",
+    "provider": "ollama",
+    "model": "gpt-oss:20b",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "name": "search",
+                    "arguments": "{\"q\":\""
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "call_late",
+                  "function": {
+                    "arguments": "hi\"}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"{\\\"q\\\":\\\"\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"delta\":\"hi\\\"}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{\"q\":\"hi\"},\"id\":\"call_late\",\"name\":\"search\",\"type\":\"toolCall\"}],\"model\":\"gpt-oss:20b\",\"provider\":\"ollama\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "tool-call-id-only-no-index",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "id": "call_x",
+                  "function": {
+                    "name": "f",
+                    "arguments": "{}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"{}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{},\"id\":\"call_x\",\"name\":\"f\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "tool-call-name-resend",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "c1",
+                  "function": {
+                    "name": "first",
+                    "arguments": ""
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "name": "second",
+                    "arguments": "{\"a\":1}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"delta\":\"{\\\"a\\\":1}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{\"a\":1},\"id\":\"c1\",\"name\":\"first\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "tool-call-empty-arg-delta",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "c1",
+                  "function": {
+                    "name": "f"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{},\"id\":\"c1\",\"name\":\"f\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "two-concurrent-tool-calls",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "c0",
+                  "function": {
+                    "name": "a",
+                    "arguments": "{\"x\":"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 1,
+                  "id": "c1",
+                  "function": {
+                    "name": "b",
+                    "arguments": "{\"y\":"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": "1}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 1,
+                  "function": {
+                    "arguments": "2}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"{\\\"x\\\":\",\"type\":\"toolcall_delta\"},{\"contentIndex\":1,\"type\":\"toolcall_start\"},{\"contentIndex\":1,\"delta\":\"{\\\"y\\\":\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"delta\":\"1}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":1,\"delta\":\"2}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"contentIndex\":1,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{\"x\":1},\"id\":\"c0\",\"name\":\"a\",\"type\":\"toolCall\"},{\"arguments\":{\"y\":2},\"id\":\"c1\",\"name\":\"b\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "tool-malformed-json-repair",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "c1",
+                  "function": {
+                    "name": "edit",
+                    "arguments": "{\"path\":\"A\\H\",\"text\":\"col1\tcol2\"}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"{\\\"path\\\":\\\"A\\\\H\\\",\\\"text\\\":\\\"col1\\tcol2\\\"}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{\"path\":\"A\\\\H\",\"text\":\"col1\\tcol2\"},\"id\":\"c1\",\"name\":\"edit\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "reasoning-then-text",
+    "api": "openai-completions",
+    "provider": "ollama",
+    "model": "gpt-oss:20b",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "reasoning_content": "Let me"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "reasoning_content": " think"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "Answer"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"thinking_start\"},{\"contentIndex\":0,\"delta\":\"Let me\",\"type\":\"thinking_delta\"},{\"contentIndex\":0,\"delta\":\" think\",\"type\":\"thinking_delta\"},{\"contentIndex\":1,\"type\":\"text_start\"},{\"contentIndex\":1,\"delta\":\"Answer\",\"type\":\"text_delta\"},{\"content\":\"Let me think\",\"contentIndex\":0,\"type\":\"thinking_end\"},{\"content\":\"Answer\",\"contentIndex\":1,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"thinking\":\"Let me think\",\"thinkingSignature\":\"reasoning_content\",\"type\":\"thinking\"},{\"text\":\"Answer\",\"type\":\"text\"}],\"model\":\"gpt-oss:20b\",\"provider\":\"ollama\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "reasoning-field-precedence",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "reasoning_content": "RC",
+              "reasoning": "R",
+              "reasoning_text": "RT"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"thinking_start\"},{\"contentIndex\":0,\"delta\":\"RC\",\"type\":\"thinking_delta\"},{\"content\":\"RC\",\"contentIndex\":0,\"type\":\"thinking_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"thinking\":\"RC\",\"thinkingSignature\":\"reasoning_content\",\"type\":\"thinking\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "reasoning-signature-locked-on-first",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "reasoning": "a"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "reasoning_content": "b"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"thinking_start\"},{\"contentIndex\":0,\"delta\":\"a\",\"type\":\"thinking_delta\"},{\"contentIndex\":0,\"delta\":\"b\",\"type\":\"thinking_delta\"},{\"content\":\"ab\",\"contentIndex\":0,\"type\":\"thinking_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"thinking\":\"ab\",\"thinkingSignature\":\"reasoning\",\"type\":\"thinking\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "length-finish-reason",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "x"
+            },
+            "finish_reason": "length"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"x\",\"type\":\"text_delta\"},{\"content\":\"x\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"length\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"x\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"length\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "end-alias-finish-reason",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "x"
+            },
+            "finish_reason": "end"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"x\",\"type\":\"text_delta\"},{\"content\":\"x\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"x\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "toolUse-via-function_call",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "c1",
+                  "function": {
+                    "name": "f",
+                    "arguments": "{}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": "function_call"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"{}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{},\"id\":\"c1\",\"name\":\"f\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "content_filter-error",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "partial"
+            },
+            "finish_reason": "content_filter"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"partial\",\"type\":\"text_delta\"},{\"content\":\"partial\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"error\",\"type\":\"error\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"partial\",\"type\":\"text\"}],\"errorMessage\":\"Provider finish_reason: content_filter\",\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"error\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "network_error-error",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "partial"
+            },
+            "finish_reason": "network_error"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"partial\",\"type\":\"text_delta\"},{\"content\":\"partial\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"error\",\"type\":\"error\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"partial\",\"type\":\"text\"}],\"errorMessage\":\"Provider finish_reason: network_error\",\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"error\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "unknown-finish-reason",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "partial"
+            },
+            "finish_reason": "weird_reason"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"partial\",\"type\":\"text_delta\"},{\"content\":\"partial\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"error\",\"type\":\"error\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"partial\",\"type\":\"text\"}],\"errorMessage\":\"Provider finish_reason: weird_reason\",\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"error\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "stream-ended-without-finish-reason",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "Hel"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "lo"
+            },
+            "finish_reason": null
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"Hel\",\"type\":\"text_delta\"},{\"contentIndex\":0,\"delta\":\"lo\",\"type\":\"text_delta\"},{\"content\":\"Hello\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"error\",\"type\":\"error\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"Hello\",\"type\":\"text\"}],\"errorMessage\":\"Stream ended without finish_reason\",\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"error\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "unknown-trailing-chunks",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "hi"
+            },
+            "finish_reason": "stop"
+          }
+        ]
+      },
+      null,
+      42,
+      {
+        "id": "chatcmpl_test",
+        "choices": []
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"hi\",\"type\":\"text_delta\"},{\"content\":\"hi\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"hi\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "responseModel-differs",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "hi"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "model": "served-model-v2"
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"hi\",\"type\":\"text_delta\"},{\"content\":\"hi\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"hi\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"responseModel\":\"served-model-v2\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "responseId-omitted",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "hi"
+            },
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"hi\",\"type\":\"text_delta\"},{\"content\":\"hi\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"hi\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "responseId-late",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "a"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_late",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "b"
+            },
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"a\",\"type\":\"text_delta\"},{\"contentIndex\":0,\"delta\":\"b\",\"type\":\"text_delta\"},{\"content\":\"ab\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"ab\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_late\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "usage-chunk-standard",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "x"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 100,
+          "completion_tokens": 20,
+          "prompt_tokens_details": {
+            "cached_tokens": 30,
+            "cache_write_tokens": 10
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 5
+          }
+        }
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"x\",\"type\":\"text_delta\"},{\"content\":\"x\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"x\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":30,\"cacheWrite\":10,\"input\":60,\"output\":20,\"reasoning\":5,\"totalTokens\":120}}}"
+  },
+  {
+    "name": "usage-cached-zero-not-fallthrough",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "x"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 50,
+          "completion_tokens": 10,
+          "prompt_cache_hit_tokens": 7,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        }
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"x\",\"type\":\"text_delta\"},{\"content\":\"x\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"x\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":50,\"output\":10,\"reasoning\":0,\"totalTokens\":60}}}"
+  },
+  {
+    "name": "usage-prompt-cache-hit-fallback",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "x"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 50,
+          "completion_tokens": 10,
+          "prompt_cache_hit_tokens": 7
+        }
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"x\",\"type\":\"text_delta\"},{\"content\":\"x\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"x\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":7,\"cacheWrite\":0,\"input\":43,\"output\":10,\"reasoning\":0,\"totalTokens\":60}}}"
+  },
+  {
+    "name": "usage-moonshot-choice-fallback",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "x"
+            },
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_tokens": 10,
+              "completion_tokens": 2
+            }
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"x\",\"type\":\"text_delta\"},{\"content\":\"x\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"x\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":10,\"output\":2,\"reasoning\":0,\"totalTokens\":12}}}"
+  },
+  {
+    "name": "usage-only-final-chunk",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "hi"
+            },
+            "finish_reason": "stop"
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [],
+        "usage": {
+          "prompt_tokens": 10,
+          "completion_tokens": 5
+        }
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"hi\",\"type\":\"text_delta\"},{\"content\":\"hi\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"hi\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":10,\"output\":5,\"reasoning\":0,\"totalTokens\":15}}}"
+  },
+  {
+    "name": "usage-absent-ollama",
+    "api": "openai-completions",
+    "provider": "ollama",
+    "model": "gpt-oss:20b",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "hi"
+            },
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"hi\",\"type\":\"text_delta\"},{\"content\":\"hi\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"hi\",\"type\":\"text\"}],\"model\":\"gpt-oss:20b\",\"provider\":\"ollama\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "usage-last-write-wins",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "a"
+            },
+            "finish_reason": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 1,
+          "completion_tokens": 1
+        }
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "b"
+            },
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_tokens": 99,
+              "completion_tokens": 99
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 5,
+          "completion_tokens": 5
+        }
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"a\",\"type\":\"text_delta\"},{\"contentIndex\":0,\"delta\":\"b\",\"type\":\"text_delta\"},{\"content\":\"ab\",\"contentIndex\":0,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"ab\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":5,\"output\":5,\"reasoning\":0,\"totalTokens\":10}}}"
+  },
+  {
+    "name": "multimodal-single-delta",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "T",
+              "reasoning_content": "R",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "c0",
+                  "function": {
+                    "name": "f",
+                    "arguments": "{}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"T\",\"type\":\"text_delta\"},{\"contentIndex\":1,\"type\":\"thinking_start\"},{\"contentIndex\":1,\"delta\":\"R\",\"type\":\"thinking_delta\"},{\"contentIndex\":2,\"type\":\"toolcall_start\"},{\"contentIndex\":2,\"delta\":\"{}\",\"type\":\"toolcall_delta\"},{\"content\":\"T\",\"contentIndex\":0,\"type\":\"text_end\"},{\"content\":\"R\",\"contentIndex\":1,\"type\":\"thinking_end\"},{\"contentIndex\":2,\"type\":\"toolcall_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"T\",\"type\":\"text\"},{\"thinking\":\"R\",\"thinkingSignature\":\"reasoning_content\",\"type\":\"thinking\"},{\"arguments\":{},\"id\":\"c0\",\"name\":\"f\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "text-after-tool",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "c0",
+                  "function": {
+                    "name": "f",
+                    "arguments": "{}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "text"
+            },
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"{}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":1,\"type\":\"text_start\"},{\"contentIndex\":1,\"delta\":\"text\",\"type\":\"text_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"content\":\"text\",\"contentIndex\":1,\"type\":\"text_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{},\"id\":\"c0\",\"name\":\"f\",\"type\":\"toolCall\"},{\"text\":\"text\",\"type\":\"text\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "finish-with-toolcall-same-chunk",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "c0",
+                  "function": {
+                    "name": "f",
+                    "arguments": "{\"a\":1}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": "tool_calls"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"{\\\"a\\\":1}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{\"a\":1},\"id\":\"c0\",\"name\":\"f\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "two-tool-calls-one-delta",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "c0",
+                  "function": {
+                    "name": "a",
+                    "arguments": "{\"x\":1}"
+                  }
+                },
+                {
+                  "index": 1,
+                  "id": "c1",
+                  "function": {
+                    "name": "b",
+                    "arguments": "{\"y\":2}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"{\\\"x\\\":1}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":1,\"type\":\"toolcall_start\"},{\"contentIndex\":1,\"delta\":\"{\\\"y\\\":2}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"contentIndex\":1,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{\"x\":1},\"id\":\"c0\",\"name\":\"a\",\"type\":\"toolCall\"},{\"arguments\":{\"y\":2},\"id\":\"c1\",\"name\":\"b\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "tool-call-index-backfill",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "id": "cx",
+                  "function": {
+                    "name": "f",
+                    "arguments": "{\"a\":"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "id": "cx",
+                  "index": 0,
+                  "function": {
+                    "arguments": "1}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": {
+                    "arguments": ""
+                  }
+                }
+              ]
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "tool_calls"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"toolcall_start\"},{\"contentIndex\":0,\"delta\":\"{\\\"a\\\":\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"delta\":\"1}\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"delta\":\"\",\"type\":\"toolcall_delta\"},{\"contentIndex\":0,\"type\":\"toolcall_end\"},{\"reason\":\"toolUse\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"arguments\":{\"a\":1},\"id\":\"cx\",\"name\":\"f\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"toolUse\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "reasoning-empty-field-skipped",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "reasoning_content": "",
+              "reasoning": "R"
+            },
+            "finish_reason": null
+          }
+        ]
+      },
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {},
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"thinking_start\"},{\"contentIndex\":0,\"delta\":\"R\",\"type\":\"thinking_delta\"},{\"content\":\"R\",\"contentIndex\":0,\"type\":\"thinking_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"thinking\":\"R\",\"thinkingSignature\":\"reasoning\",\"type\":\"thinking\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  },
+  {
+    "name": "content-and-tool-one-delta",
+    "api": "openai-completions",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "chunks": [
+      {
+        "id": "chatcmpl_test",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "content": "hi",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "c0",
+                  "function": {
+                    "name": "f",
+                    "arguments": "{}"
+                  }
+                }
+              ]
+            },
+            "finish_reason": "stop"
+          }
+        ]
+      }
+    ],
+    "expected": "{\"events\":[{\"type\":\"start\"},{\"contentIndex\":0,\"type\":\"text_start\"},{\"contentIndex\":0,\"delta\":\"hi\",\"type\":\"text_delta\"},{\"contentIndex\":1,\"type\":\"toolcall_start\"},{\"contentIndex\":1,\"delta\":\"{}\",\"type\":\"toolcall_delta\"},{\"content\":\"hi\",\"contentIndex\":0,\"type\":\"text_end\"},{\"contentIndex\":1,\"type\":\"toolcall_end\"},{\"reason\":\"stop\",\"type\":\"done\"}],\"final\":{\"api\":\"openai-completions\",\"content\":[{\"text\":\"hi\",\"type\":\"text\"},{\"arguments\":{},\"id\":\"c0\",\"name\":\"f\",\"type\":\"toolCall\"}],\"model\":\"gpt-4o-mini\",\"provider\":\"openai\",\"responseId\":\"chatcmpl_test\",\"role\":\"assistant\",\"stopReason\":\"stop\",\"usage\":{\"cacheRead\":0,\"cacheWrite\":0,\"input\":0,\"output\":0,\"totalTokens\":0}}}"
+  }
+]
